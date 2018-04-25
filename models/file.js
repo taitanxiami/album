@@ -4,7 +4,7 @@ var path = require('path');
 
 exports.getAllAblum = function(callback){
 
-  fs.readdir('./uploads',function(error,files){
+fs.readdir('./uploads',function(error,files){
     
     if(error) {
       console.log(error);      
@@ -34,7 +34,7 @@ exports.getAllAblum = function(callback){
   });
 };
 
-exports.getAllImagesByAlnumName = function(albumName, callback){
+  exports.getAllImagesByAlnumName = function(albumName, callback){
   fs.readdir('./uploads/' + albumName, function(error,files){
     
     console.log(files);
