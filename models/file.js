@@ -2,51 +2,46 @@
 var fs = require('fs');
 var path = require('path');
 
-exports.getAllAblum = function(callback){
+exports.getAllAlbums = function(callback) {
 
-fs.readdir('./uploads',function(error,files){
-    
-    if(error) {
-      console.log(error);      
-      var err = "找不到uploads文件夹";
-      callback(err, null);
-    }
-    var allAlnums= [];
-    
-    (function interator(i) {     
-      //边界  
-      if(i == files.length){
-        callback(null,allAlnums);
-        return;
+  fs.readdir("./uploads",function(err,files){
+      if(err){
+          callback("没有找到uploads文件",null);
       }
-      var filePath = path.resolve(__dirname,'../uploads/' , files[i]);
-      fs.stat(filePath, function(error,stats){  
-        if(error) {
-          console.log(error);
-          return;
-        };
-        if(stats.isDirectory()) {
-          allAlnums.push(files[i]);
-        }
-        interator(i+1);
-      });       
-    })(0);
+      // console.log(files);
+      var allAlbums = [];
+      (function iterator(i){
+          if(i == files.length){
+              //遍历结束
+              callback(null,allAlbums);
+              return;
+          }
+          fs.stat("./uploads/" + files[i],function(err,stats){
+              if(err){
+                  callback("找不到文件" + files[i] , null);
+              }
+              if(stats.isDirectory()){
+                  allAlbums.push(files[i]);
+              }
+              iterator(i + 1);
+          });
+      })(0);
   });
-};
+}
 
   exports.getAllImagesByAlnumName = function(albumName, callback){
   fs.readdir('./uploads/' + albumName, function(error,files){
     
-    console.log(files);
+    // console.log(files);
     if(error) {
       console.log('readdir=======',error);
       callback(error, null);
     }
-    var allImages = [];
     
+    var allImages = [];
     (function interator(i) {     
       //边界  
-      if(i == files.length){
+      if(i === files.length){
         callback(null,allImages);
         return;
       }
